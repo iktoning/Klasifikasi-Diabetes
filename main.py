@@ -5,11 +5,9 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.metrics import confusion_matrix
 
-# Mendapatkan path file dataset
-dataset_path = '/app/klasifikasi-diabetes/Dataset/Diabetes.csv'
-
-# Membaca dataset
-data = pd.read_csv(dataset_path)
+# Membaca dan menampilkan dataset
+data = pd.read_csv("Dataset/Diabetes.csv")
+data.head()
 
 # Memilih atribut yang akan digunakan
 selected_features = ['Glucose', 'Insulin', 'Age']

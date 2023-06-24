@@ -1,71 +1,45 @@
 # Import library
-import pandas as pd
-import sklearn
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-from sklearn.metrics import confusion_matrix
-
-# Membaca dan menampilkan dataset
-data = pd.read_csv("Dataset/Diabetes.csv")
-data.head()
-
-# Memilih atribut yang akan digunakan
-selected_features = ['Glucose', 'Insulin', 'Age']
-X = data[selected_features]
-y = data['Outcome']
-
-# Mengambil subset data dengan atribut yang dipilih
-selected_data = data[selected_features]
-
-# Menampilkan data selected_features
-print(selected_data)
-
-# Membagi data menjadi data latih dan data uji
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
-
-# Membuat objek klasifikasi KNN dengan nilai K=3
-knn = KNeighborsClassifier(n_neighbors=3)
-
-# Melatih model dengan data latih
-knn.fit(X_train, y_train)
-
-# Memprediksi label dari data uji
-y_pred = knn.predict(X_test)
-
-# Menghitung dan menampilkan akurasi
-accuracy = accuracy_score(y_test, y_pred)
-print("Akurasi: {:.2f}%".format(accuracy * 100))
-
-# Menghitung dan menampilkan precision
-precision = precision_score(y_test, y_pred)
-print("Precision: {:.2f}%".format(precision * 100))
-
-# Menghitung dan menampilkan recall
-recall = recall_score(y_test, y_pred)
-print("Recall: {:.2f}%".format(recall * 100))
-
-# Menghitung dan menampilkan F1-score
-f1 = f1_score(y_test, y_pred)
-print("F1-score: {:.2f}%".format(f1 * 100))
-
-# Import streamlit untuk UI
+import numpy as np
 import streamlit as st
+import pickle
 
-# Tambahkan judul dan deskripsi aplikasi
-st.title("Aplikasi Klasifikasi Penyakit Diabetes")
+# Membuat function untuk prediksi diabetes
+def diabetes_prediction(input_data):
+    # Merubah input_data ke numpy array
+    input_data_as_numpy_array = np.asarray(input_data)
+    
+    # Membentuk kembali array
+    input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
+    prediction = loaded_model.predict(input_data_reshaped)
+    
+    #  Hasil prediksi
+    if prediction[0] == 0:
+        return 'Anda tidak terkena diabetes'
+    else:
+        return 'Anda terkena diabetes'    
 
-# Menerima input dari pengguna
-age = st.number_input("Umur")
-glucose = st.number_input("Glukosa")
-insulin = st.number_input("Insulin")
+if __name__ == '__main__':
+    #Load model
+    loaded_model = pickle.load(open('diabetes_model.sav', 'rb'))
+    
+    # Tambahkan judul aplikasi
+    st.title("Aplikasi Klasifikasi Penyakit Diabetes")
 
-# Membuat data baru berdasarkan input pengguna
-new_data = pd.DataFrame([[glucose, insulin, age]], columns=selected_features)
+    # Menerima input dari pengguna
+    age = st.text_input("Umur")
+    glucose = st.text_input("Glukosa")
+    insulin = st.text_input("Insulin")
+    
+    #Prediksi
+    diagnosis = ''
 
-# Melakukan prediksi dengan model KNN
-prediction = knn.predict(new_data)
-
-# Menampilkan hasil prediksi
-result = "Tidak terkena diabetes." if prediction[0] == 0 else "Terkena diabetes."
-st.write("Hasil Prediksi:", result)
+    # Menampilkan hasil prediksi
+    if st.button('Hasil Tes Diabetes'):
+        try:
+            diagnosis = diabetes_prediction(
+                [age, glucose, insulin]
+            )
+        except:
+            diagnosis = "Pastikan input valid!"
+            
+    st.success(diagnosis)

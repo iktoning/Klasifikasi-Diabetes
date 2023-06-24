@@ -1,5 +1,6 @@
 # Import library
 import pandas as pd
+import sklearn
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
@@ -55,9 +56,9 @@ import streamlit as st
 st.title("Aplikasi Klasifikasi Penyakit Diabetes")
 
 # Menerima input dari pengguna
-glucose = st.number_input("Glucose", value=0.0)
-insulin = st.number_input("Insulin", value=0.0)
-age = st.number_input("Age", value=0.0)
+age = st.number_input("Umur")
+glucose = st.number_input("Glukosa")
+insulin = st.number_input("Insulin")
 
 # Membuat data baru berdasarkan input pengguna
 new_data = pd.DataFrame([[glucose, insulin, age]], columns=selected_features)

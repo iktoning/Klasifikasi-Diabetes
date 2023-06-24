@@ -1,16 +1,12 @@
 # Import library
-import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.metrics import confusion_matrix
 
-# Mendapatkan path direktori proyek saat ini
-base_dir = os.path.dirname(os.path.abspath(__file__))
-
 # Mendapatkan path file dataset
-dataset_path = os.path.join(base_dir, 'Dataset', 'Diabetes.csv')
+dataset_path = '/app/klasifikasi-diabetes/Dataset/Diabetes.csv'
 
 # Membaca dataset
 data = pd.read_csv(dataset_path)

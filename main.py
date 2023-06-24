@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.metrics import confusion_matrix
 
 # Membaca dan menampilkan dataset
-data = pd.read_csv("D:/UAS Data Textual/Klasifikasi-Diabetes/Dataset/Diabetes.csv")
+data = pd.read_csv("Dataset/Diabetes.csv")
 data.head()
 
 # Memilih atribut yang akan digunakan
